@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 
 
 
-
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
