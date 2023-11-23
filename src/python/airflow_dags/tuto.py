@@ -2,8 +2,8 @@
 Code that goes along with the Airflow located at:
 http://airflow.readthedocs.org/en/latest/tutorial.html
 
-Last Git commit: 605deb0101822f0f12af39ff813cd5c45325f797
-Date of last commit: 2023-11-24 00:23:01 +0200
+Last Git commit: 49b8c5a117af6fdc959fac8ccaf6e3bbe157d332
+Date of last commit: 2023-11-24 00:23:41 +0200
 Author of last commit: dprykhod
 """
 from airflow import DAG
