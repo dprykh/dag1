@@ -2,9 +2,9 @@
 Code that goes along with the Airflow located at:
 http://airflow.readthedocs.org/en/latest/tutorial.html
 
-Last Git commit:
-Date of last commit:
-Author of last commit:
+Last Git commit: fe11cda918795ea7ba04b61c93c492a02e9031a8
+Date of last commit: 2023-11-24 00:17:58 +0200
+Author of last commit: dprykhod
 """
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
