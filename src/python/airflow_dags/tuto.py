@@ -1,6 +1,10 @@
 """
 Code that goes along with the Airflow located at:
 http://airflow.readthedocs.org/en/latest/tutorial.html
+
+Last Git commit:
+Date of last commit:
+Author of last commit:
 """
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
