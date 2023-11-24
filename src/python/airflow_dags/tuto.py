@@ -5,6 +5,7 @@ http://airflow.readthedocs.org/en/latest/tutorial.html
 Last Git commit: e931c0c5c307a8d123e805fde3ce621bed1917f7
 Date of last commit: 2023-11-24 00:29:51 +0200
 Author of last commit: dprykhod
+
 """
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
