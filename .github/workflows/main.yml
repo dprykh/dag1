@@ -1,0 +1,24 @@
+name: Post-Merge Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  post_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Post-Merge Script
+      run: |
+        if [ "$(git log -1 --merges --pretty=%B)" == "Merge branch 'main' into main" ]; then
+          echo "Running post-merge script..."
+          # Add your post-merge script commands here
+          echo "Post-merge script completed."
+        else
+          echo "Not a merge commit. Skipping post-merge script."
+        fi
