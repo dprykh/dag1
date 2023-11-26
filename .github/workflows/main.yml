@@ -15,7 +15,7 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-              #!/bin/sh
+        #!/bin/sh
         CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
         
         for p in $CHANGED_FILES
