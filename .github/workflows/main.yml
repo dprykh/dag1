@@ -17,7 +17,10 @@ jobs:
       run: |
         ls -al
         git log -1
-        git diff --name-only  HEAD^ HEAD
+    - name: Get previous commit ID
+      run: |
+        PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+        echo "Previous commit ID: $PREVIOUS_COMMIT"
 
     - name: Run Post-Merge Script
       run: |
