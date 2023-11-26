@@ -16,12 +16,7 @@ jobs:
     - name: Debugging
       run: |
         ls -al
-        git log -1
-
-    - name: Get previous commit ID
-      run: |
-        PREVIOUS_COMMIT=$(git rev-parse HEAD~1)
-        echo "Previous commit ID: $PREVIOUS_COMMIT"
+        git log --oneline -n 2
 
     - name: Run Post-Merge Script
       run: |
