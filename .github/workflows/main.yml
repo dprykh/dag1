@@ -20,7 +20,7 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-        ##############
+
         while IFS= read -r line; do
             ((line_number++))
             echo $line
@@ -43,7 +43,7 @@ jobs:
           git add .
           git commit -m "update documentation of  with latest commit"
           exit
-        ###############
+
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
         
