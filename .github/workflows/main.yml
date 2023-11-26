@@ -17,6 +17,7 @@ jobs:
       run: |
         ls -al
         git log -1
+        git diff --name-only  HEAD^ HEAD
 
     - name: Run Post-Merge Script
       run: |
