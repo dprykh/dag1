@@ -8,6 +8,7 @@ Author of last commit: dprykh
 
 
 
+
 """
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
