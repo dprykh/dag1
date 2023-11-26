@@ -22,6 +22,7 @@ jobs:
       run: |
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
+        git log -n 1 --format=%B $COMMIT_SHA
         echo $COMMIT_SHA
 
         CHANGED=$(git diff --name-only $COMMIT_SHA)
