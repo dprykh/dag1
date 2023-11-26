@@ -6,7 +6,6 @@ Last Git commit: 1e5474e149042d998ddd6e502fbae82459f5c23f
 Date of last commit: 2023-11-26 22:35:40 +0200
 Author of last commit: dprykh
 
-
 """
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
