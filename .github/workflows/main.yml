@@ -39,7 +39,10 @@ jobs:
               sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
             fi
           done < "src/python/airflow_dags/tuto.py"
-          exit 1
+      
+          git add .
+          git commit -m "update documentation of  with latest commit"
+          exit
         ###############
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
