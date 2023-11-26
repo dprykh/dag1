@@ -22,7 +22,7 @@ jobs:
       run: |
         #!/bin/bash
 
-        CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+        CHANGED_FILES=$(git diff --name-only HEAD~)
         
         for p in $CHANGED_FILES; do
           if [[ "$p" == *"airflow_dags"* ]]; then
@@ -60,6 +60,7 @@ jobs:
         done
         
         echo 'End of script'
+
 
 
 
