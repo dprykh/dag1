@@ -20,30 +20,6 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-
-        while IFS= read -r line; do
-            ((line_number++))
-            echo $line
-            # git id update
-            if [[ "$line" == *"Last Git commit:"* ]]; then
-              sed "${line_number}s/.*/Last Git commit: COMMIT_ID/" $file_path > temp && mv temp $file_path
-            fi
-        
-            # date update
-            if [[ "$line" == *"Date of last commit:"* ]]; then
-              sed "${line_number}s/.*/Date of last commit: COMMIT_DATE/" $file_path > temp && mv temp $file_path
-            fi
-        
-            # author update
-            if [[ "$line" == *"Author of last commit:"* ]]; then
-              sed "${line_number}s/.*/Author of last commit: COMMIT_AUTHOR/" $file_path > temp && mv temp $file_path
-            fi
-          done < "src/python/airflow_dags/tuto.py"
-      
-          git add .
-          git commit -m "update documentation of  with latest commit"
-          exit
-
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
         
