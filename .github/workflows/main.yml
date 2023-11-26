@@ -13,6 +13,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Debugging
+      run: |
+        ls -al
+        git log -1
+
     - name: Run Post-Merge Script
       run: |
         # Get the commit SHA of the last commit
