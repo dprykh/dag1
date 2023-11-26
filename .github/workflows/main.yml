@@ -3,7 +3,7 @@ name: Update Documentation
 on:
   push:
     paths:
-      - 'airflow_dags/**'
+      - '**/airflow_dags/**'
 
 jobs:
   update_documentation:
