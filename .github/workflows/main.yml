@@ -21,7 +21,7 @@ jobs:
 
         # List the files in the last commit
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
-        echo $CHANGED_FILES
+        echo "files: ${CHANGED_FILES}"
 
         # CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
         
