@@ -1,44 +1,60 @@
-name: Update Documentation
+name: Post-Merge Script
 
 on:
   push:
-    paths:
-      - '**/airflow_dags/**'
+     branches:
+      - main
 
 jobs:
-  update_documentation:
+  post_merge:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set Up Git
+    - name: Run Post-Merge Script
       run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-
-    - name: Update Documentation
-      run: |
-        CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
-
-        for p in $CHANGED_FILES; do
-          if [[ "$p" == *"airflow_dags"* ]]; then
-            COMMIT_ID=$(git rev-parse HEAD)
-            COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
-            COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
-
-            file_path="$p"
-
-            sed -i "s/Last Git commit:.*/Last Git commit: ${COMMIT_ID}/" "$file_path"
-            sed -i "s/Date of last commit:.*/Date of last commit: ${COMMIT_DATE}/" "$file_path"
-            sed -i "s/Author of last commit:.*/Author of last commit: ${COMMIT_AUTHOR}/" "$file_path"
-
-            git add "$file_path"
-            git commit -m "Update documentation of ${p} with latest commit"
-          fi
+              #!/bin/sh
+        CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
+        
+        for p in $CHANGED_FILES
+        do
+        echo $p
+        line_number=0
+        if [[ "$p" == *"airflow_dags"* ]]
+        then
+        
+          COMMIT_ID=$(git rev-parse HEAD)
+          COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
+          COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+        
+          file_path="$p"
+        
+          while IFS= read -r line; do
+            ((line_number++))
+        
+            # git id update
+            if [[ "$line" == *"Last Git commit:"* ]]; then
+              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # date update
+            if [[ "$line" == *"Date of last commit:"* ]]; then
+              sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # author update
+            if [[ "$line" == *"Author of last commit:"* ]]; then
+              sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
+            fi
+          done < "$file_path"
+        
+          git add $p
+          git commit -m "update documentation of ${p} with latest commit"
+        fi
         done
-
-    - name: Push Changes
-      if: success()
-      run: git push origin HEAD:main
+        
+        echo 'end of pre-merge hook'
+        
+        exit
