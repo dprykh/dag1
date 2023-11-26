@@ -24,11 +24,11 @@ jobs:
         COMMIT_SHA=$(git rev-parse HEAD)
         echo $COMMIT_SHA
         
-        msg=$(git log -n 1 --format=%B $COMMIT_SHA)
-        echo $msg
-
-        CHANGED=$(git diff --name-only $COMMIT_SHA)
-        echo $CHANGED
+        COMMIT_SHA=$(git rev-parse HEAD)
+        CHANGED=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$COMMIT_SHA" | \
+          jq -r '.files[].filename')
+        echo "Changed files: $CHANGED"
         
         # List the files in the last commit
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
