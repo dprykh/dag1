@@ -15,10 +15,48 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-        if [ "$(git log -1 --merges --pretty=%B)" == "Merge branch 'main' into main" ]; then
-          echo "Running post-merge script..."
-          # Add your post-merge script commands here
-          echo "Post-merge script completed."
-        else
-          echo "Not a merge commit. Skipping post-merge script."
+        #!/bin/sh
+
+        CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
+        
+        for p in $CHANGED_FILES
+        do
+        echo $p
+        line_number=0
+        if [[ "$p" == *"airflow_dags"* ]]
+        then
+        
+          COMMIT_ID=$(git rev-parse HEAD)
+          COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
+          COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+        
+          file_path="$p"
+        
+          while IFS= read -r line; do
+            ((line_number++))
+        
+            # git id update
+            if [[ "$line" == *"Last Git commit:"* ]]; then
+              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # date update
+            if [[ "$line" == *"Date of last commit:"* ]]; then
+              sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # author update
+            if [[ "$line" == *"Author of last commit:"* ]]; then
+              sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
+            fi
+          done < "$file_path"
+        
+          git add $p
+          git commit -m "update documentation of ${p} with latest commit"
         fi
+        done
+        
+        echo 'end of pre-merge hook'
+        
+        exit
+
