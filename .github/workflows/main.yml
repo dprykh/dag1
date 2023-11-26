@@ -15,8 +15,13 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-        #!/bin/sh
-        CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
+        # Get the commit SHA of the last commit
+        COMMIT_SHA=$(git rev-parse HEAD)
+
+        # List the files in the last commit
+        CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
+        
+        # CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
         
         for p in $CHANGED_FILES
         do
