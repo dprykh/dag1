@@ -24,6 +24,9 @@ jobs:
         COMMIT_SHA=$(git rev-parse HEAD)
         echo $COMMIT_SHA
 
+        CHANGED=$(git diff --name-only $COMMIT_SHA)
+        echo $CHANGED
+        
         # List the files in the last commit
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
         echo "files: ${CHANGED_FILES}"
