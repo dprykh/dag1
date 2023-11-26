@@ -20,21 +20,32 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
+        ~~~~~~~~~~~
+        while IFS= read -r line; do
+            ((line_number++))
+        
+            # git id update
+            if [[ "$line" == *"Last Git commit:"* ]]; then
+              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # date update
+            if [[ "$line" == *"Date of last commit:"* ]]; then
+              sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # author update
+            if [[ "$line" == *"Author of last commit:"* ]]; then
+              sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
+            fi
+          done < "$src/python/airflow_dags/tuto.py"
+          exit 1
+        ~~~~~~~~~~~~~~
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
-        echo $COMMIT_SHA
-        
-        COMMIT_SHA=$(git rev-parse HEAD)
-        CHANGED=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-          "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$COMMIT_SHA" | \
-          jq -r '.files[].filename')
-        echo "Changed files: $CHANGED"
         
         # List the files in the last commit
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
-        echo "files: ${CHANGED_FILES}"
-
-        # CHANGED_FILES=$(git diff --name-only  HEAD^ HEAD)
         
         for p in $CHANGED_FILES
         do
