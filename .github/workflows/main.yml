@@ -21,7 +21,7 @@ jobs:
         echo "COMMIT_SHA: ${COMMIT_SHA}"
 
         # List the files in the last commit
-        git diff-tree --no-commit-id --name-only -r $COMMIT_SHA
+        git diff-tree --no-commit-id --name-only -r HEAD
 
     - name: Run Post-Merge Script
       run: |
