@@ -58,7 +58,8 @@ jobs:
           echo "COMMIT_AUTHOR: ${COMMIT_AUTHOR}"
         
           file_path="$p"
-        
+          echo "File path: ${file_path}"
+
           while IFS= read -r line; do
             ((line_number++))
         
