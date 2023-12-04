@@ -64,7 +64,7 @@ jobs:
           set -x
           while IFS= read -r line; do
             echo $line_number
-            ((line_number++))
+            let "line_number=line_number+1"
             echo $line_number
             
             if [[ "$line" == *"Last Git commit:"* ]]; then
