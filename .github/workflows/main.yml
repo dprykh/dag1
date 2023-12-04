@@ -81,7 +81,7 @@ jobs:
             if [[ "$line" == *"Author of last commit:"* ]]; then
               sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
             fi
-          done < "$file_path"
+          done < "${file_path}"
 
           echo "GIT"
           git pull
