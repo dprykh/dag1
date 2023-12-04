@@ -20,5 +20,4 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-            file_path = "src/python/airflow_dags/tuto.py"
-            sed "10s/.*/Last Git commit: AAAAAA/" $file_path > temp && mv temp $file_path
+            sed "10s/.*/Last Git commit: AAAAAA/" "src/python/airflow_dags/tuto.py" temp && mv temp "src/python/airflow_dags/tuto.py"
