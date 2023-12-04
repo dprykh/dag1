@@ -25,9 +25,11 @@ jobs:
 
         # Get the commit SHA of the last commit
         COMMIT_SHA=$(git rev-parse HEAD)
-        
+        echo "COMMIT_SHA: ${COMMIT_SHA}"
+
         # List the files in the last commit
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
+        echo "CHANGED_FILES: ${CHANGED_FILES}"
         
         for p in $CHANGED_FILES
         do
@@ -37,8 +39,13 @@ jobs:
         then
         
           COMMIT_ID=$(git rev-parse HEAD)
+          echo "COMMIT_ID: ${COMMIT_ID}"
+
           COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
+          echo "COMMIT_DATE: ${COMMIT_DATE}"
+
           COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+          echo "COMMIT_AUTHOR: ${COMMIT_AUTHOR}"
         
           file_path="$p"
         
