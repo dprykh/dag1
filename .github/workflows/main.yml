@@ -18,7 +18,13 @@ jobs:
       run: |
          git config --global user.email "dprykh@softserveinc.com"
          git config --global user.name "Denys Prykhodko"
-         git diff
+         # Get the commit SHA of the last commit
+         COMMIT_SHA=$(git rev-parse HEAD)
+         echo "COMMIT_SHA: ${COMMIT_SHA}"
+
+         # List the files in the last commit
+         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
+         echo "CHANGED_FILES: ${CHANGED_FILES}"
 
     
     # - name: Checkout Repository
