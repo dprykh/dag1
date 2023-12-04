@@ -66,7 +66,7 @@ jobs:
             ((line_number++))
             
             if [[ "${line}" == *"Last Git commit:"* ]]; then
-              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
+              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" ${file_path} > temp && mv temp ${file_path}
             fi
 
             echo "DATE"
