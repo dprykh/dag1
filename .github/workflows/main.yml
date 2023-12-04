@@ -15,12 +15,9 @@ jobs:
 
     - name: Debugging
       run: |
-        echo ${{github.sha}}
-        git log --oneline -n 2
-        COMMIT_SHA=$(git rev-parse HEAD)
-        echo "COMMIT_SHA: ${COMMIT_SHA}"
-
-        # List the files in the last commit
+        git log -n 5
+        git show ${{ github.sha }}
+        git status
         git diff
 
     - name: Run Post-Merge Script
