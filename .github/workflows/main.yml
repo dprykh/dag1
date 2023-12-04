@@ -25,6 +25,7 @@ jobs:
             git config --global user.email "dprykh@softserveinc.com"
             git config --global user.name "Denys Prykhodko"
 
+            git pull main
             git status
             git add .
             git commit -m "message1"
