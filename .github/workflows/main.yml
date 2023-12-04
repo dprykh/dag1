@@ -31,3 +31,4 @@ jobs:
     - name: Status check
       run: |
         git status
+        git log --oneline -n 3
