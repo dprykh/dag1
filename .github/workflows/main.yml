@@ -15,15 +15,10 @@ jobs:
           fetch-depth: 0
 
     - name: Git Changed Files
-      uses: ahmadnassri/action-changed-files@v1.0.4
-
-    - id: changed-files
-      uses: ahmadnassri/action-changed-files@v1
-
-    - run: |
-          for file in ${{steps.changed-files.outputs.files}}; do
-            echo "$file has changed"
-          done
+      run: |
+         git config --global user.email "dprykh@softserveinc.com"
+         git config --global user.name "Denys Prykhodko"
+         git diff
 
     
     # - name: Checkout Repository
