@@ -20,7 +20,7 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-            sed "5s/.*/Last Git commit: AAAAAA/" "src/python/airflow_dags/tuto.py" > temp && mv temp "src/python/airflow_dags/tuto.py"
+            sed "5s/.*/Last Git commit: BBBBB/" "src/python/airflow_dags/tuto.py" > temp && mv temp "src/python/airflow_dags/tuto.py"
             
             git config --global user.email "dprykh@softserveinc.com"
             git config --global user.name "Denys Prykhodko"
