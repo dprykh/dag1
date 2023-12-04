@@ -27,7 +27,7 @@ jobs:
 
             git status
             git add .
-            git commit -m "message"b
+            git commit -m "message"
     - name: Status check
       run: |
         git status
