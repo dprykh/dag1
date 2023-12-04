@@ -30,7 +30,7 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
-        #!/bin/bash -e
+        #!/bin/bash
         git config --global user.email "dprykh@softserveinc.com"
         git config --global user.name "Denys Prykhodko"
 
