@@ -63,7 +63,7 @@ jobs:
 
           set -x
           while IFS= read -r line; do
-            line_number = line_number + 1
+            line_number = $line_number + 1
             
             if [[ "$line" == *"Last Git commit:"* ]]; then
               sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" ${file_path} > temp && mv temp ${file_path}
