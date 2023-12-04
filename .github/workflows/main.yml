@@ -62,23 +62,28 @@ jobs:
 
           while IFS= read -r line; do
             ((line_number++))
-        
+            echo "line number: ${line_number}"
+
+            echo "ID"
             # git id update
             if [[ "$line" == *"Last Git commit:"* ]]; then
               sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
             fi
-        
+
+            echo "DATE"
             # date update
             if [[ "$line" == *"Date of last commit:"* ]]; then
               sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
             fi
-        
+
+            echo "AUTHOR"
             # author update
             if [[ "$line" == *"Author of last commit:"* ]]; then
               sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
             fi
           done < "$file_path"
 
+          echo "GIT"
           git pull
           git add $p
           git commit -m "update documentation of ${p} with latest commit"
