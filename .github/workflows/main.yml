@@ -27,7 +27,7 @@ jobs:
 
             git status
             git add .
-            git commit -m "message1"
+            git commit -m "message2"
             git push origin main
     - name: Status check
       run: |
