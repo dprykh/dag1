@@ -30,6 +30,7 @@ jobs:
 
     - name: Run Post-Merge Script
       run: |
+        #!/bin/bash -e
         git config --global user.email "dprykh@softserveinc.com"
         git config --global user.name "Denys Prykhodko"
 
@@ -60,6 +61,7 @@ jobs:
           file_path="$p"
           echo "File path: ${file_path}"
 
+          set -x
           while IFS= read -r line; do
             ((line_number++))
             echo "line number: ${line_number}"
@@ -82,6 +84,7 @@ jobs:
               sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
             fi
           done < "${file_path}"
+          set +x
 
           echo "GIT"
           git pull
