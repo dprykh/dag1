@@ -17,6 +17,11 @@ jobs:
       run: |
         ls -al
         git log --oneline -n 2
+        COMMIT_SHA=$(git rev-parse HEAD)
+        echo "COMMIT_SHA: ${COMMIT_SHA}"
+
+        # List the files in the last commit
+        git diff-tree --no-commit-id --name-only -r $COMMIT_SHA
 
     - name: Run Post-Merge Script
       run: |
