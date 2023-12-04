@@ -14,90 +14,81 @@ jobs:
       with:
           fetch-depth: 0
 
-    - name: Git Changed Files
+    - name: Debugging
       run: |
-         git config --global user.email "dprykh@softserveinc.com"
-         git config --global user.name "Denys Prykhodko"
-         # Get the commit SHA of the last commit
-         COMMIT_SHA=$(git rev-parse HEAD)
-         echo "COMMIT_SHA: ${COMMIT_SHA}"
+        git config --global user.email "dprykh@softserveinc.com"
+        git config --global user.name "Denys Prykhodko"
 
-         # List the files in the last commit
-         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
-         echo "CHANGED_FILES: ${CHANGED_FILES}"
+        # Get the commit SHA of the last commit
+        COMMIT_SHA=$(git rev-parse HEAD)
+        echo "COMMIT_SHA: ${COMMIT_SHA}"
 
-    
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v2
+        # List the files in the last commit
+        CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
+        echo "CHANGED_FILES: ${CHANGED_FILES}"
+      
 
-    # - name: Debugging
-    #   run: |
-    #     git log -n 5
-    #     git show ${{ github.sha }}
-    #     git status
-    #     git diff
+    - name: Run Post-Merge Script
+      run: |
+        git config --global user.email "dprykh@softserveinc.com"
+        git config --global user.name "Denys Prykhodko"
 
-    # - name: Run Post-Merge Script
-    #   run: |
-    #     git config --global user.email "dprykh@softserveinc.com"
-    #     git config --global user.name "Denys Prykhodko"
+        # Get the commit SHA of the last commit
+        COMMIT_SHA=$(git rev-parse HEAD)
+        echo "COMMIT_SHA: ${COMMIT_SHA}"
 
-    #     # Get the commit SHA of the last commit
-    #     COMMIT_SHA=$(git rev-parse HEAD)
-    #     echo "COMMIT_SHA: ${COMMIT_SHA}"
+        # List the files in the last commit
+        CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
+        echo "CHANGED_FILES: ${CHANGED_FILES}"
+        
+        for p in $CHANGED_FILES
+        do
+        echo $p
+        line_number=0
+        if [[ "$p" == *"airflow_dags"* ]]
+        then
+        
+          COMMIT_ID=$(git rev-parse HEAD)
+          echo "COMMIT_ID: ${COMMIT_ID}"
 
-    #     # List the files in the last commit
-    #     CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA)
-    #     echo "CHANGED_FILES: ${CHANGED_FILES}"
-        
-    #     for p in $CHANGED_FILES
-    #     do
-    #     echo $p
-    #     line_number=0
-    #     if [[ "$p" == *"airflow_dags"* ]]
-    #     then
-        
-    #       COMMIT_ID=$(git rev-parse HEAD)
-    #       echo "COMMIT_ID: ${COMMIT_ID}"
+          COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
+          echo "COMMIT_DATE: ${COMMIT_DATE}"
 
-    #       COMMIT_DATE=$(git show --no-patch --format=%ci $COMMIT_ID)
-    #       echo "COMMIT_DATE: ${COMMIT_DATE}"
+          COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+          echo "COMMIT_AUTHOR: ${COMMIT_AUTHOR}"
+        
+          file_path="$p"
+        
+          while IFS= read -r line; do
+            ((line_number++))
+        
+            # git id update
+            if [[ "$line" == *"Last Git commit:"* ]]; then
+              sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # date update
+            if [[ "$line" == *"Date of last commit:"* ]]; then
+              sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
+            fi
+        
+            # author update
+            if [[ "$line" == *"Author of last commit:"* ]]; then
+              sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
+            fi
+          done < "$file_path"
 
-    #       COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
-    #       echo "COMMIT_AUTHOR: ${COMMIT_AUTHOR}"
+          git pull
+          git add $p
+          git commit -m "update documentation of ${p} with latest commit"
+          git push origin main
+        fi
+        done
         
-    #       file_path="$p"
+        echo 'end of pre-merge hook'
         
-    #       while IFS= read -r line; do
-    #         ((line_number++))
-        
-    #         # git id update
-    #         if [[ "$line" == *"Last Git commit:"* ]]; then
-    #           sed "${line_number}s/.*/Last Git commit: ${COMMIT_ID}/" $file_path > temp && mv temp $file_path
-    #         fi
-        
-    #         # date update
-    #         if [[ "$line" == *"Date of last commit:"* ]]; then
-    #           sed "${line_number}s/.*/Date of last commit: ${COMMIT_DATE}/" $file_path > temp && mv temp $file_path
-    #         fi
-        
-    #         # author update
-    #         if [[ "$line" == *"Author of last commit:"* ]]; then
-    #           sed "${line_number}s/.*/Author of last commit: ${COMMIT_AUTHOR}/" $file_path > temp && mv temp $file_path
-    #         fi
-    #       done < "$file_path"
-
-    #       git pull
-    #       git add $p
-    #       git commit -m "update documentation of ${p} with latest commit"
-    #       git push origin main
-    #     fi
-    #     done
-        
-    #     echo 'end of pre-merge hook'
-        
-    #     exit
-    # - name: Status check
-    #   run: |
-    #     git status
-    #     git log --oneline -n 3
+        exit
+    - name: Status check
+      run: |
+        git status
+        git log --oneline -n 3
