@@ -15,7 +15,7 @@ jobs:
 
     - name: Debugging
       run: |
-        ls -al
+        echo ${{github.sha}}
         git log --oneline -n 2
         COMMIT_SHA=$(git rev-parse HEAD)
         echo "COMMIT_SHA: ${COMMIT_SHA}"
